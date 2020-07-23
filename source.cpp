@@ -32,6 +32,7 @@ class genom
 genom generations[GENERATION_NUMBER];
 genom gens[QUEENS_NUMBER][GENERATION_NUMBER];
 int gensLength[QUEENS_NUMBER + 1] = {0};
+int maxProfit = 0;
 
 void generator() //generator with simple x and y checker
 {
@@ -117,6 +118,10 @@ void classification(queen queens[])
         gens[number][gensLength[number]].queens[i] = queens[i];
     }    
     gensLength[number]++;
+    if (number > maxProfit)
+    {
+        maxProfit = number;
+    }    
 }
 
 int main()
@@ -134,8 +139,10 @@ int main()
     for (int i = 0; i < QUEENS_NUMBER + 1; i++)
     {
         cout << "Number of G[" << i << "]: " << gensLength[i] << 
-        "  [%]: " <<  (gensLength[i])*((double)i/QUEENS_NUMBER)*i << endl;
+        "  [%]: " <<  ((double)i/QUEENS_NUMBER)*i << endl;
     }
+
+    cout << "MAXPROFIT: " << maxProfit << endl;
     
 
     auto end = chrono::steady_clock::now();
