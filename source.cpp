@@ -30,7 +30,8 @@ class genom
 };
 
 genom generations[GENERATION_NUMBER];
-
+genom gens[QUEENS_NUMBER][GENERATION_NUMBER];
+int gensLength[QUEENS_NUMBER + 1] = {0};
 
 void generator() //generator with simple x and y checker
 {
@@ -108,6 +109,16 @@ int fitness(queen queens[])
     return checkedNumber;
 }
 
+void classification(queen queens[])
+{
+    int number = fitness(queens);    
+    for (int i = 0; i < QUEENS_NUMBER; i++)
+    {
+        gens[number][gensLength[number]].queens[i] = queens[i];
+    }    
+    gensLength[number]++;
+}
+
 int main()
 {
     auto start = chrono::steady_clock::now();
@@ -118,17 +129,17 @@ int main()
     int max = 0;
     for (int i = 0; i < GENERATION_NUMBER; i++)
     {
-        int fitnessScore = fitness(generations[i].queens);
-        if (fitnessScore > max)
-        {
-            max = fitnessScore;
-            cout << "MAX : " << max << endl;
-        }
-               
+        classification(generations[i].queens);              
     }   
+    for (int i = 0; i < QUEENS_NUMBER + 1; i++)
+    {
+        cout << "Number of G[" << i << "]: " << gensLength[i] << 
+        "  [%]: " <<  (gensLength[i])*((double)i/QUEENS_NUMBER)*i << endl;
+    }
+    
 
     auto end = chrono::steady_clock::now();
     auto elapsed = chrono::duration_cast<chrono::microseconds>(end - start);
-    cout << "It took me " << elapsed.count() << " microseconds." << endl;
+    cout << "Time: " << elapsed.count() << " microseconds" << endl;
     return 0;
 }
