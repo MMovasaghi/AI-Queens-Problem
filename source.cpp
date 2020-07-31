@@ -141,6 +141,8 @@ int main()
         cout << "Number of G[" << i << "]: " << gensLength[i] << 
         "  [%]: " <<  ((double)i/QUEENS_NUMBER)*i << endl;
     }
+    int randomNum = (rand() % maxProfit) + 1;
+    cout << "Random Selection: G[" << randomNum << "]\n";
 
     cout << "MAXPROFIT: " << maxProfit << endl;
     
