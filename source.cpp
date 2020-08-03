@@ -169,20 +169,30 @@ int main()
     
     double persent = 0;
     int ee[QUEENS_NUMBER] = {0};
-    for (int i = 0; i < 100; i++)
+    for (int i = 0; i < 20; i++)
     {
-        double rnd = rand() % 100 ;
-        for (int j = QUEENS_NUMBER - 1; j >= 0; j++)
+        double rnd = rand() % 100;
+        persent = 0;
+        for (int j = QUEENS_NUMBER - 1; j >= 0; j--)
         {
-            persent += floor(numbers[i]/(double)totalNumber)*100;
-            if (rnd < persent)
+            //if(numbers[j] != 0)
             {
-                ee[j]++;
-            }
-        }
-        
-        
+                persent += floor((numbers[j]/(double)totalNumber)*100) + 1;
+                cout << rnd << "  " << persent << endl;
+                if (rnd < persent)
+                {
+                    ee[j]++;
+                    break;
+                }
+            }            
+        }       
     }
+
+    for (int i = 0; i < QUEENS_NUMBER; i++)
+    {
+        cout << i << " Number[" << numbers[i] << "] Rand " << " : " << ee[i] <<  endl;
+    }
+
     
     
     auto end = chrono::steady_clock::now();
