@@ -2,6 +2,7 @@
 #include <ctime>
 #include <chrono>
 #include <cmath>
+#include <stdlib.h> 
 using namespace std;
 
 #define GENERATION_NUMBER 5000
@@ -33,6 +34,10 @@ genom generations[GENERATION_NUMBER];
 genom gens[QUEENS_NUMBER][GENERATION_NUMBER];
 int gensLength[QUEENS_NUMBER + 1] = {0};
 int maxProfit = 0;
+
+int numbers[QUEENS_NUMBER] = {0};
+int ptrNumbers = 0;
+int totalNumber = 0;
 
 void generator() //generator with simple x and y checker
 {
@@ -112,16 +117,35 @@ int fitness(queen queens[])
 
 void classification(queen queens[])
 {
+    //totalNumber = 0
+    //numbers[] = 0
     int number = fitness(queens);    
+    bool check = true;
     for (int i = 0; i < QUEENS_NUMBER; i++)
     {
         gens[number][gensLength[number]].queens[i] = queens[i];
+        if (numbers[i] == number)
+            check = false;        
     }    
+
     gensLength[number]++;
+
+    if(check)
+    {
+        numbers[ptrNumbers] = number;
+        ptrNumbers++;
+        totalNumber += number;
+    }
+    
     if (number > maxProfit)
     {
         maxProfit = number;
     }    
+}
+
+int compare (const void * a, const void * b)
+{
+  return ( *(int*)a - *(int*)b );
 }
 
 int main()
@@ -136,17 +160,31 @@ int main()
     {
         classification(generations[i].queens);              
     }   
-    for (int i = 0; i < QUEENS_NUMBER + 1; i++)
+    qsort (numbers, QUEENS_NUMBER, sizeof(int), compare);
+    for (int i = 0; i < QUEENS_NUMBER; i++)
     {
-        cout << "Number of G[" << i << "]: " << gensLength[i] << 
-        "  [%]: " <<  ((double)i/QUEENS_NUMBER)*i << endl;
+        cout << i << " : " << floor((numbers[i]/(double)totalNumber)*100) <<  endl;
     }
-    int randomNum = (rand() % maxProfit) + 1;
-    cout << "Random Selection: G[" << randomNum << "]\n";
-
-    cout << "MAXPROFIT: " << maxProfit << endl;
+    cout << "Total : " << totalNumber << endl;
     
-
+    double persent = 0;
+    int ee[QUEENS_NUMBER] = {0};
+    for (int i = 0; i < 100; i++)
+    {
+        double rnd = rand() % 100 ;
+        for (int j = QUEENS_NUMBER - 1; j >= 0; j++)
+        {
+            persent += floor(numbers[i]/(double)totalNumber)*100;
+            if (rnd < persent)
+            {
+                ee[j]++;
+            }
+        }
+        
+        
+    }
+    
+    
     auto end = chrono::steady_clock::now();
     auto elapsed = chrono::duration_cast<chrono::microseconds>(end - start);
     cout << "Time: " << elapsed.count() << " microseconds" << endl;
