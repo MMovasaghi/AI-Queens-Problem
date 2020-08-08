@@ -28,7 +28,7 @@ int boardSize;
 int printStep;
 int mutationRate;
 
-int fitnessValue(string arrangement)
+int fitnessCalcultor(string arrangement)
 {
     int fitness = (boardSize * (boardSize - 1) )/2;
     for(int i = 0; i < boardSize; i++)
@@ -59,7 +59,7 @@ void generateFirstGeneration()
         random_shuffle( tmpArrengment.begin(), tmpArrengment.end());
         temp   = createGenom();
         temp->arrangement = tmpArrengment;
-        temp->cost = fitnessValue(tmpArrengment);
+        temp->cost = fitnessCalcultor(tmpArrengment);
         population.push_back(temp);
     }
 }
@@ -70,7 +70,7 @@ chromosome* reproduce(chromosome *x, chromosome *y)
     int rnd = rand() % boardSize;
     // crossOver
     child->arrangement = (x->arrangement).substr(0, rnd) + (y->arrangement).substr(rnd, boardSize - rnd + 1);
-    child->cost = fitnessValue(child->arrangement);
+    child->cost = fitnessCalcultor(child->arrangement);
     return child;
 }
 
@@ -90,7 +90,7 @@ int randomSelection()
 
 bool checkFit(chromosome *test)
 {
-    if(fitnessValue(test->arrangement)==((boardSize*(boardSize-1))/2))
+    if(fitnessCalcultor(test->arrangement)==((boardSize*(boardSize-1))/2))
         return true;
     return false;
 }
@@ -129,7 +129,7 @@ chromosome* Generator()
                 found = 1;
                 return child;
             }
-            if (generation % 100 == 0)
+            if (generation % printStep == 0)
             {
                 cout << "G[" << generation << "] : " << child->arrangement << endl;
             }
